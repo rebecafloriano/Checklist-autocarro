@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checklist</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            
+        }
+
+        .main {
+            align-self: center;
+            border: 1px solid white;
+            background-color: black;
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            padding-bottom: 1rem;
+        }
+
+        button {
+            width: 50%;
+            margin: 0 25%;
+            padding-top: 1rem;
+        }
+
+
+
+        .shake {
+            animation: shake 0.4s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-4px);
+            }
+
+            50% {
+                transform: translateX(4px);
+            }
+
+            75% {
+                transform: translateX(-4px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .form-check-input {
+            width: 3em;
+            height: 1.5em;
+        }
+
+        .form-check-input.neutral {
+            background-color: #ccc;
+            border-color: #aaa;
+        }
+
+        .form-check-input:checked {
+            background-color: #198754;
+            /* verde */
+            border-color: #198754;
+        }
+
+        .form-check-input:not(:checked):not(.neutral) {
+            background-color: #dc3545;
+            /* vermelho */
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+
+<body class="p-4 container">
+    
+    <div class="main">
+        <h1>Checklist</h1>
+        
+
+        <div class="row g-4 align-items-center">
+            <div class="col-auto">
+                <label for="inputMatricula" class="col-form-label">Matrícula</label>
+            </div>
+            <div class="col-auto pb-2">
+                <input id="matricula" class="form-control input-text" aria-describedby="matricula" required>
+            </div>
+        </div>
+        <div class="row g-1 align-items-center">
+            <div class="col-auto">
+                <label for="inputMotorista" class="col-form-label">ID Motorista</label>
+            </div>
+            <div class="col-auto">
+                <input id="motorista" class="form-control input-text" aria-describedby="motorista" required>
+            </div>
+        </div>
+
+
+
+        <!-- "Frente" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="frenteCheck"
+                onchange="handleToggle(this, 'frente')">
+            <label class="form-check-label" for="frenteCheck">Frente</label>
+        </div>
+        <div class="mb-3" id="frenteFoto" style="display: none;">
+            <label for="frenteImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="frenteImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="frenteTextarea"></textarea>
+                <label for="frenteTextarea">Observações</label>
+            </div>
+        </div>
+
+
+        <!-- "Lateral Direita" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralDirCheck"
+                onchange="handleToggle(this, 'lateralDir')">
+            <label class="form-check-label" for="lateralDirCheck">Lateral direita</label>
+        </div>
+        <div class="mb-3" id="lateralDirFoto" style="display: none;">
+            <label for="lateralDirImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="lateralDirImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="lateralDirTextarea"></textarea>
+                <label for="lateralDirTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Lateral Esquerda" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralEsqCheck"
+                onchange="handleToggle(this, 'lateralEsq')">
+            <label class="form-check-label" for="lateralEsqCheck">Lateral
+                esquerda</label>
+        </div>
+        <div class="mb-3" id="lateralEsqFoto" style="display: none;">
+            <label for="lateralEsqImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="lateralEsqImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="lateralEsqTextarea"></textarea>
+                <label for="lateralEsqTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Traseira" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="traseiraCheck"
+                onchange="handleToggle(this, 'traseira')">
+            <label class="form-check-label" for="traseiraCheck">Traseira</label>
+        </div>
+        <div class="mb-3" id="traseiraFoto" style="display: none;">
+            <label for="traseiraImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="traseiraImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="traseiraTextarea"></textarea>
+                <label for="traseiraTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Pneus" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="pneusCheck"
+                onchange="handleToggle(this, 'pneus')">
+            <label class="form-check-label" for="pneusCheck">Pneus</label>
+        </div>
+        <div class="mb-3" id="pneusFoto" style="display: none;">
+            <label for="pneusImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="pneusImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="pneusTextarea"></textarea>
+                <label for="pneusTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Luzes" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="luzesCheck"
+                onchange="handleToggle(this, 'luzes')">
+            <label class="form-check-label" for="luzesCheck">Luzes</label>
+        </div>
+        <div class="mb-3" id="luzesFoto" style="display: none;">
+            <label for="luzesImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="luzesImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="luzesTextarea"></textarea>
+                <label for="luzesTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Óleo" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="oleoCheck"
+                onchange="handleToggle(this, 'oleo')">
+            <label class="form-check-label" for="oleoCheck">Óleo</label>
+        </div>
+        <div class="mb-3" id="oleoFoto" style="display: none;">
+            <label for="oleoImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="oleoImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="oleoTextarea"></textarea>
+                <label for="oleoTextarea">Observações</label>
+            </div>
+        </div>
+
+        <!-- "Refrigerante" -->
+        <div class="form-check form-switch mt-3">
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="refrigeranteCheck"
+                onchange="handleToggle(this, 'refrigerante')">
+            <label class="form-check-label" for="refrigeranteCheck">Refrigerante</label>
+        </div>
+        <div class="mb-3" id="refrigeranteFoto" style="display: none;">
+            <label for="refrigeranteImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" capture="environment" id="refrigeranteImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="refrigeranteTextarea"></textarea>
+                <label for="refrigeranteTextarea">Observações</label>
+            </div>
+        </div>
+        <button class="btn btn-primary mt-4" onclick="validarChecklist()">Enviar</button>
+    </div>
+
+    
+
+    <script>
+        function handleToggle(el, zona) {
+            const fotoDiv = document.getElementById(zona + 'Foto');
+
+            if (el.classList.contains('neutral')) {
+                el.classList.remove('neutral');
+                el.checked = true; // primeira vez assume como OK
+                fotoDiv.style.display = 'none';
+            } else if (el.checked) {
+                fotoDiv.style.display = 'none';
+            } else {
+                fotoDiv.style.display = 'block';
+            }
+        }
+
+
+        function handleToggle(el, zona) {
+            const fotoDiv = document.getElementById(zona + 'Foto');
+
+            if (el.classList.contains('neutral')) {
+                el.classList.remove('neutral');
+                el.checked = true;
+                fotoDiv.style.display = 'none';
+            } else if (el.checked) {
+                fotoDiv.style.display = 'none';
+            } else {
+                fotoDiv.style.display = 'block';
+            }
+        }
+
+        function validarChecklist() {
+            const switches = document.querySelectorAll('.form-check-input');
+            const matricula = document.getElementById('matricula');
+            const motorista = document.getElementById('motorista');
+            let todosRespondidos = true;
+
+            switches.forEach((sw) => {
+                if (sw.classList.contains('neutral')) {
+                    todosRespondidos = false;
+                    sw.classList.add('shake'); // para feedback visual, opcional
+                }
+            });
+
+            if (!todosRespondidos || matricula.value === '' || motorista.value === '') {
+                alert("Por favor, verifique todos os itens do checklist antes de enviar.");
+            } else {
+                // Aqui você pode fazer o envio do formulário
+                alert("Checklist enviado com sucesso!");
+            }
+        }
+
+    </script>
+</body>
+
+</html>
