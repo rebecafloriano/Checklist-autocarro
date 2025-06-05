@@ -11,7 +11,7 @@
             display: flex;
             flex-direction: column;
         }
-    
+
         .main {
             align-self: center;
             border: 1px solid white;
@@ -22,69 +22,75 @@
             width: 100%;
             max-width: 600px;
         }
-    
+
         .identificacao {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
-    
+
+        .input-text {
+            height: 1.9em;
+            text-align: center;
+        }
+
         h1 {
             text-align: center;
             padding-bottom: 1rem;
         }
-    
+
         button {
             width: 50%;
             margin: 0 25%;
             padding-top: 1rem;
         }
-    
+
         .shake {
             animation: shake 0.4s;
         }
-    
+
         @keyframes shake {
             0% {
                 transform: translateX(0);
             }
-    
+
             25% {
                 transform: translateX(-4px);
             }
-    
+
             50% {
                 transform: translateX(4px);
             }
-    
+
             75% {
                 transform: translateX(-4px);
             }
-    
+
             100% {
                 transform: translateX(0);
             }
         }
-    
+
         .form-check-input {
             width: 3em;
             height: 1.5em;
         }
-    
+
         .form-check-input.neutral {
             background-color: #ccc;
             border-color: #aaa;
         }
-    
+
         .form-check-input:checked {
             background-color: #198754;
             border-color: #198754;
         }
-    
+
         .form-check-input:not(:checked):not(.neutral) {
             background-color: #dc3545;
             border-color: #dc3545;
         }
-    
+
         /* NOVO: Alinhamento dos switches */
         .form-check.form-switch {
             display: flex;
@@ -93,61 +99,66 @@
             padding: 0.5rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-    
+
         .form-check-label {
             flex: 1;
             font-weight: 500;
         }
-    
+
         /* Espaço entre label e switch */
         .form-check-input {
             margin-left: 1rem;
         }
-    
+
         /* Fotos e observações */
         .mb-3 {
             margin-top: 1rem;
         }
-    
+
         .form-label {
             margin-bottom: 0.5rem;
-            font-weight: 500;
+            font-weight: 300;
         }
-    
+
         .form-floating textarea {
             min-height: 80px;
             resize: vertical;
         }
-    
+
         @media (max-width: 576px) {
             .main {
                 padding: 1.5rem;
             }
-    
+
             button {
                 width: 100%;
                 margin: 1rem 0 0;
             }
         }
     </style>
-    
+
 </head>
 
 <body class="p-4 container">
 
     <div class="main">
-        <h1>Checklist</h1>
+        <header>
+            <div>
+                <img src="rodov-tejo.png" alt="">
+                <h1>Checklist</h1>
+            </div>
+        </header>
 
-
-        <div class="row identificacao align-items-center">
+        <div class="row identificacao">
             <div class="col-auto">
                 <label for="inputMatricula" class="col-form-label">Matrícula</label>
             </div>
             <div class="col-auto pb-2">
-                <input id="matricula" class="form-control input-text" aria-describedby="matricula" required>
+                <input id="matricula" class="form-control input-text" aria-describedby="matricula" maxlength="9"
+                    required>
             </div>
         </div>
-        <div class="row identificacao g-1 align-items-center">
+        <div class="row identificacao">
             <div class="col-auto">
                 <label for="inputMotorista" class="col-form-label">ID Motorista</label>
             </div>
@@ -325,6 +336,17 @@
                 alert("Checklist enviado com sucesso!");
             }
         }
+        document.getElementById('matricula').addEventListener('input', function (e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            let formatted = '';
+
+            if (value.length > 0) formatted += value.substring(0, 2);
+            if (value.length > 2) formatted += '-' + value.substring(2, 4);
+            if (value.length > 4) formatted += '-' + value.substring(4, 6);
+
+            e.target.value = formatted;
+        });
+
 
     </script>
 </body>
