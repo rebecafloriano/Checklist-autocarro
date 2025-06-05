@@ -10,9 +10,8 @@
         .container {
             display: flex;
             flex-direction: column;
-
         }
-
+    
         .main {
             align-self: center;
             border: 1px solid white;
@@ -20,73 +19,118 @@
             border-radius: 1rem;
             padding: 2rem 3rem;
             color: white;
+            width: 100%;
+            max-width: 600px;
         }
-
+    
         .identificacao {
             display: flex;
             flex-direction: column;
-
         }
-
+    
         h1 {
             text-align: center;
             padding-bottom: 1rem;
         }
-
+    
         button {
             width: 50%;
             margin: 0 25%;
             padding-top: 1rem;
         }
-
+    
         .shake {
             animation: shake 0.4s;
         }
-
+    
         @keyframes shake {
             0% {
                 transform: translateX(0);
             }
-
+    
             25% {
                 transform: translateX(-4px);
             }
-
+    
             50% {
                 transform: translateX(4px);
             }
-
+    
             75% {
                 transform: translateX(-4px);
             }
-
+    
             100% {
                 transform: translateX(0);
             }
         }
-
+    
         .form-check-input {
             width: 3em;
             height: 1.5em;
         }
-
+    
         .form-check-input.neutral {
             background-color: #ccc;
             border-color: #aaa;
         }
-
+    
         .form-check-input:checked {
             background-color: #198754;
-            /* verde */
             border-color: #198754;
         }
-
+    
         .form-check-input:not(:checked):not(.neutral) {
             background-color: #dc3545;
-            /* vermelho */
             border-color: #dc3545;
         }
+    
+        /* NOVO: Alinhamento dos switches */
+        .form-check.form-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    
+        .form-check-label {
+            flex: 1;
+            font-weight: 500;
+        }
+    
+        /* Espaço entre label e switch */
+        .form-check-input {
+            margin-left: 1rem;
+        }
+    
+        /* Fotos e observações */
+        .mb-3 {
+            margin-top: 1rem;
+        }
+    
+        .form-label {
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+    
+        .form-floating textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+    
+        @media (max-width: 576px) {
+            .main {
+                padding: 1.5rem;
+            }
+    
+            button {
+                width: 100%;
+                margin: 1rem 0 0;
+            }
+        }
     </style>
+    
 </head>
 
 <body class="p-4 container">
@@ -117,10 +161,10 @@
 
 
         <!-- "Frente" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="frenteCheck">Frente</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="frenteCheck"
                 onchange="handleToggle(this, 'frente')">
-            <label class="form-check-label" for="frenteCheck">Frente</label>
         </div>
         <div class="mb-3" id="frenteFoto" style="display: none;">
             <label for="frenteImage" class="form-label">Carregar foto da avaria</label>
@@ -131,12 +175,11 @@
             </div>
         </div>
 
-
         <!-- "Lateral Direita" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="lateralDirCheck">Lateral direita</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralDirCheck"
                 onchange="handleToggle(this, 'lateralDir')">
-            <label class="form-check-label" for="lateralDirCheck">Lateral direita</label>
         </div>
         <div class="mb-3" id="lateralDirFoto" style="display: none;">
             <label for="lateralDirImage" class="form-label">Carregar foto da avaria</label>
@@ -148,11 +191,10 @@
         </div>
 
         <!-- "Lateral Esquerda" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="lateralEsqCheck">Lateral esquerda</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralEsqCheck"
                 onchange="handleToggle(this, 'lateralEsq')">
-            <label class="form-check-label" for="lateralEsqCheck">Lateral
-                esquerda</label>
         </div>
         <div class="mb-3" id="lateralEsqFoto" style="display: none;">
             <label for="lateralEsqImage" class="form-label">Carregar foto da avaria</label>
@@ -164,10 +206,10 @@
         </div>
 
         <!-- "Traseira" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="traseiraCheck">Traseira</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="traseiraCheck"
                 onchange="handleToggle(this, 'traseira')">
-            <label class="form-check-label" for="traseiraCheck">Traseira</label>
         </div>
         <div class="mb-3" id="traseiraFoto" style="display: none;">
             <label for="traseiraImage" class="form-label">Carregar foto da avaria</label>
@@ -179,10 +221,10 @@
         </div>
 
         <!-- "Pneus" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="pneusCheck">Pneus</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="pneusCheck"
                 onchange="handleToggle(this, 'pneus')">
-            <label class="form-check-label" for="pneusCheck">Pneus</label>
         </div>
         <div class="mb-3" id="pneusFoto" style="display: none;">
             <label for="pneusImage" class="form-label">Carregar foto da avaria</label>
@@ -194,10 +236,10 @@
         </div>
 
         <!-- "Luzes" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="luzesCheck">Luzes</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="luzesCheck"
                 onchange="handleToggle(this, 'luzes')">
-            <label class="form-check-label" for="luzesCheck">Luzes</label>
         </div>
         <div class="mb-3" id="luzesFoto" style="display: none;">
             <label for="luzesImage" class="form-label">Carregar foto da avaria</label>
@@ -209,10 +251,10 @@
         </div>
 
         <!-- "Óleo" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="oleoCheck">Óleo</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="oleoCheck"
                 onchange="handleToggle(this, 'oleo')">
-            <label class="form-check-label" for="oleoCheck">Óleo</label>
         </div>
         <div class="mb-3" id="oleoFoto" style="display: none;">
             <label for="oleoImage" class="form-label">Carregar foto da avaria</label>
@@ -224,10 +266,10 @@
         </div>
 
         <!-- "Refrigerante" -->
-        <div class="form-check form-switch mt-3">
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="refrigeranteCheck">Refrigerante</label>
             <input class="form-check-input neutral" type="checkbox" role="switch" id="refrigeranteCheck"
                 onchange="handleToggle(this, 'refrigerante')">
-            <label class="form-check-label" for="refrigeranteCheck">Refrigerante</label>
         </div>
         <div class="mb-3" id="refrigeranteFoto" style="display: none;">
             <label for="refrigeranteImage" class="form-label">Carregar foto da avaria</label>
@@ -237,7 +279,9 @@
                 <label for="refrigeranteTextarea">Observações</label>
             </div>
         </div>
+
         <button class="btn btn-primary mt-4" onclick="validarChecklist()">Enviar</button>
+
     </div>
 
 
