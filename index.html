@@ -326,6 +326,8 @@
             } else {
                 fotoDiv.style.display = 'block';
             }
+             // Armazena estado no sessionStorage
+            sessionStorage.setItem(zona, el.checked);
         }
 
 
@@ -362,6 +364,23 @@
 
             e.target.value = formatted;
         });
+
+        window.addEventListener('DOMContentLoaded', () => {
+                const zonas = ['frente', 'lateralDir', 'lateralEsq', 'traseira', 'pneus', 'luzes', 'oleo', 'refrigerante'];
+
+                zonas.forEach(zona => {
+                    const estado = sessionStorage.getItem(zona);
+                    const input = document.getElementById(zona + 'Check');
+                    const fotoDiv = document.getElementById(zona + 'Foto');
+
+                    if (estado !== null) {
+                        input.checked = estado === 'true';
+                        input.classList.remove('neutral');
+                        fotoDiv.style.display = input.checked ? 'none' : 'block';
+                    }
+                });
+            });
+
 
 
     </script>
