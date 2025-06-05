@@ -10,7 +10,7 @@
         .container {
             display: flex;
             flex-direction: column;
-            
+
         }
 
         .main {
@@ -18,8 +18,14 @@
             border: 1px solid white;
             background-color: black;
             border-radius: 1rem;
-            padding: 2rem;
+            padding: 2rem 3rem;
             color: white;
+        }
+
+        .identificacao {
+            display: flex;
+            flex-direction: column;
+
         }
 
         h1 {
@@ -32,8 +38,6 @@
             margin: 0 25%;
             padding-top: 1rem;
         }
-
-
 
         .shake {
             animation: shake 0.4s;
@@ -86,12 +90,12 @@
 </head>
 
 <body class="p-4 container">
-    
+
     <div class="main">
         <h1>Checklist</h1>
-        
 
-        <div class="row g-4 align-items-center">
+
+        <div class="row identificacao align-items-center">
             <div class="col-auto">
                 <label for="inputMatricula" class="col-form-label">Matrícula</label>
             </div>
@@ -99,14 +103,16 @@
                 <input id="matricula" class="form-control input-text" aria-describedby="matricula" required>
             </div>
         </div>
-        <div class="row g-1 align-items-center">
+        <div class="row identificacao g-1 align-items-center">
             <div class="col-auto">
                 <label for="inputMotorista" class="col-form-label">ID Motorista</label>
             </div>
             <div class="col-auto">
-                <input id="motorista" class="form-control input-text" aria-describedby="motorista" required>
+                <input id="motorista" class="form-control input-text" type="number" aria-describedby="motorista"
+                    required>
             </div>
         </div>
+
 
 
 
@@ -234,7 +240,7 @@
         <button class="btn btn-primary mt-4" onclick="validarChecklist()">Enviar</button>
     </div>
 
-    
+
 
     <script>
         function handleToggle(el, zona) {
@@ -252,20 +258,6 @@
         }
 
 
-        function handleToggle(el, zona) {
-            const fotoDiv = document.getElementById(zona + 'Foto');
-
-            if (el.classList.contains('neutral')) {
-                el.classList.remove('neutral');
-                el.checked = true;
-                fotoDiv.style.display = 'none';
-            } else if (el.checked) {
-                fotoDiv.style.display = 'none';
-            } else {
-                fotoDiv.style.display = 'block';
-            }
-        }
-
         function validarChecklist() {
             const switches = document.querySelectorAll('.form-check-input');
             const matricula = document.getElementById('matricula');
@@ -275,12 +267,15 @@
             switches.forEach((sw) => {
                 if (sw.classList.contains('neutral')) {
                     todosRespondidos = false;
-                    sw.classList.add('shake'); // para feedback visual, opcional
+                    sw.classList.add('shake');
+                    setTimeout(() => sw.classList.remove('shake'), 500);
                 }
             });
 
-            if (!todosRespondidos || matricula.value === '' || motorista.value === '') {
-                alert("Por favor, verifique todos os itens do checklist antes de enviar.");
+
+            if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
+                alert("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
+                return;
             } else {
                 // Aqui você pode fazer o envio do formulário
                 alert("Checklist enviado com sucesso!");
