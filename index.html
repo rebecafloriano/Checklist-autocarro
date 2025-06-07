@@ -14,7 +14,6 @@
         }
 
         .main {
-            align-self: center;
             border: 1px solid white;
             background-color: black;
             border-radius: 1rem;
@@ -24,10 +23,10 @@
             max-width: 600px;
             box-sizing: border-box;
 
-    
-}
 
-        
+        }
+
+
 
         .identificacao {
             display: flex;
@@ -134,7 +133,10 @@
         @media (max-width: 576px) {
             .main {
                 padding: 1em;
-                max-width: 95%;
+                width: 100%;
+                max-width: 97%;
+                box-sizing: border-box;
+                /* garantir que padding não estoure */
             }
 
             button {
@@ -160,7 +162,7 @@
 
 </head>
 
-<body class="p-4 container">
+<body class="d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white">
 
     <div class="main">
 
