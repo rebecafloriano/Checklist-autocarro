@@ -356,6 +356,9 @@
             let todosRespondidos = true;
             let fotosOk = true;
 
+            const switchesMap = {};
+            const observacoesMap = {};
+
             // Validação dos switches e fotos
             switches.forEach((sw) => {
                 const zona = sw.id.replace('Check', '');
@@ -372,6 +375,12 @@
                         setTimeout(() => fotoInput.classList.remove('shake'), 500);
                     }
                 }
+
+                // Monta os MAPS
+                switchesMap[zona] = sw.checked ? "ok" : "problema";
+
+                const obsTextarea = document.getElementById(zona + 'Textarea');
+                observacoesMap[zona] = obsTextarea ? obsTextarea.value.trim() : '';
             });
 
             // Validação campos obrigatórios
@@ -396,26 +405,14 @@
                 return;
             }
 
-            // Montar a estrutura desejada:
+            // Montar a estrutura desejada
             const dadosChecklist = {
                 matricula: matricula.value.trim(),
                 motorista: motorista.value.trim(),
                 dataHora: new Date().toISOString(),
-                switches: {},
-                observacoes: {}
+                switches: switchesMap,
+                observacoes: observacoesMap
             };
-
-            // Preenche switches e observacoes no formato desejado
-            switches.forEach(sw => {
-                const zona = sw.id.replace('Check', '');
-                const observacoes = document.getElementById(zona + 'Textarea')?.value || '';
-
-                // Switches → "ok" ou "problema"
-                dadosChecklist.switches[zona] = sw.checked ? "ok" : "problema";
-
-                // Observacoes → texto (string)
-                dadosChecklist.observacoes[zona] = observacoes;
-            });
 
             // Enviar dados para o banco
             try {
