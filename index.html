@@ -396,21 +396,29 @@
                 return;
             }
 
+            // Montar a estrutura desejada:
+            const dadosChecklist = {
+                matricula: matricula.value.trim(),
+                motorista: motorista.value.trim(),
+                dataHora: new Date().toISOString(),
+                switches: {},
+                observacoes: {}
+            };
+
+            // Preenche switches e observacoes no formato desejado
+            switches.forEach(sw => {
+                const zona = sw.id.replace('Check', '');
+                const observacoes = document.getElementById(zona + 'Textarea')?.value || '';
+
+                // Switches → "ok" ou "problema"
+                dadosChecklist.switches[zona] = sw.checked ? "ok" : "problema";
+
+                // Observacoes → texto (string)
+                dadosChecklist.observacoes[zona] = observacoes;
+            });
+
             // Enviar dados para o banco
             try {
-                const dadosChecklist = {
-                    matricula: matricula.value.trim(),
-                    motorista: motorista.value.trim(),
-                    dataHora: new Date().toISOString(),
-                    respostas: Array.from(switches).map(sw => {
-                        const zona = sw.id.replace('Check', '');
-                        const checked = sw.checked;
-                        const observacoes = document.getElementById(zona + 'Textarea')?.value || '';
-                        return { zona, checked, observacoes };
-                    })
-                };
-
-                // Chama sua função global que sabe usar o Firestore corretamente
                 await salvarChecklist(dadosChecklist);
 
                 // Sucesso
@@ -439,6 +447,97 @@
                 console.error("Erro ao enviar para o banco: ", error);
                 showToast("Erro ao enviar checklist. Tente novamente.");
             }
+        }
+
+        const switches = document.querySelectorAll('.form-check-input');
+        const matricula = document.getElementById('matricula');
+        const motorista = document.getElementById('motorista');
+        let todosRespondidos = true;
+        let fotosOk = true;
+
+        // Validação dos switches e fotos
+        switches.forEach((sw) => {
+            const zona = sw.id.replace('Check', '');
+            const fotoInput = document.getElementById(zona + 'Image');
+
+            if (sw.classList.contains('neutral')) {
+                todosRespondidos = false;
+                sw.classList.add('shake');
+                setTimeout(() => sw.classList.remove('shake'), 500);
+            } else if (!sw.checked) {
+                if (!fotoInput || !fotoInput.files || fotoInput.files.length === 0) {
+                    fotosOk = false;
+                    fotoInput.classList.add('shake');
+                    setTimeout(() => fotoInput.classList.remove('shake'), 500);
+                }
+            }
+        });
+
+        // Validação campos obrigatórios
+        if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
+
+            if (matricula.value.trim() === '') {
+                matricula.classList.add('shake');
+                setTimeout(() => matricula.classList.remove('shake'), 500);
+            }
+
+            if (motorista.value.trim() === '') {
+                motorista.classList.add('shake');
+                setTimeout(() => motorista.classList.remove('shake'), 500);
+            }
+
+            showToast("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
+            return;
+        }
+
+        if (!fotosOk) {
+            showToast("Por favor, envie uma foto para todos os itens que foram marcados como problema (vermelho).");
+            return;
+        }
+
+        // Enviar dados para o banco
+        try {
+            const dadosChecklist = {
+                matricula: matricula.value.trim(),
+                motorista: motorista.value.trim(),
+                dataHora: new Date().toISOString(),
+                respostas: Array.from(switches).map(sw => {
+                    const zona = sw.id.replace('Check', '');
+                    const checked = sw.checked;
+                    const observacoes = document.getElementById(zona + 'Textarea')?.value || '';
+                    return { zona, checked, observacoes };
+                })
+            };
+
+            // Chama sua função global que sabe usar o Firestore corretamente
+            await salvarChecklist(dadosChecklist);
+
+            // Sucesso
+            showToast("Checklist enviado com sucesso!");
+
+            // Limpar campos após envio com sucesso
+            matricula.value = '';
+            motorista.value = '';
+            switches.forEach((sw) => {
+                const zona = sw.id.replace('Check', '');
+                const fotoDiv = document.getElementById(zona + 'Foto');
+                const fotoInput = document.getElementById(zona + 'Image');
+                const textarea = document.getElementById(zona + 'Textarea');
+
+                sw.classList.add('neutral');
+                sw.checked = false;
+
+                fotoDiv.style.display = 'none';
+                if (fotoInput) fotoInput.value = '';
+                if (textarea) textarea.value = '';
+
+                sessionStorage.removeItem(zona);
+            });
+
+        } catch (error) {
+            console.error("Erro ao enviar para o banco: ", error);
+            showToast("Erro ao enviar checklist. Tente novamente.");
+        }
         }
 
 
