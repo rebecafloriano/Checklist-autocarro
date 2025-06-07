@@ -326,10 +326,10 @@
                     Mensagem aqui.
                 </div>
             </div>
-            </div>
+        </div>
 
     </div>
-    
+
 
 
 
@@ -377,6 +377,17 @@
             });
 
             if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
+
+                if (matricula.value.trim() === '') {
+                    matricula.classList.add('shake');
+                    setTimeout(() => matricula.classList.remove('shake'), 500);
+                }
+
+                if (motorista.value.trim() === '') {
+                    motorista.classList.add('shake');
+                    setTimeout(() => motorista.classList.remove('shake'), 500);
+                }
+
                 showToast("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
                 return;
             }
@@ -387,9 +398,35 @@
             }
 
             // Se tudo ok:
+            // Se tudo ok:
+
+            const dadosChecklist = {
+                matricula: matricula.value.trim(),
+                motorista: motorista.value.trim(),
+                switches: {},
+                observacoes: {}
+            };
+
+            // Pega o estado de cada switch:
+            document.querySelectorAll('.form-check-input').forEach(sw => {
+                const zona = sw.id.replace('Check', '');
+                const isOk = sw.checked ? 'ok' : 'problema';
+                dadosChecklist.switches[zona] = isOk;
+
+                // Pega também o texto de observações (se houver):
+                const obsTextarea = document.getElementById(zona + 'Textarea');
+                if (obsTextarea) {
+                    dadosChecklist.observacoes[zona] = obsTextarea.value.trim();
+                }
+            });
+
+            // Chama a função global para salvar:
+            salvarChecklist(dadosChecklist);
+
             showToast("Checklist enviado com sucesso!");
-            // Aqui você pode enviar para a API, ex. fetch(...)
+
         }
+
 
 
 
@@ -420,7 +457,7 @@
             });
         });
 
-        function showToast(message) {   
+        function showToast(message) {
             document.getElementById('toast-body').innerText = message;
             const toast = new bootstrap.Toast(document.getElementById('liveToast'));
             toast.show();
@@ -428,6 +465,35 @@
 
 
     </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBsqQU6wFFigmpB4aSCjKVnMOAri9H4y6E",
+            authDomain: "checklist-autocarro-4a5ad.firebaseapp.com",
+            projectId: "checklist-autocarro-4a5ad",
+            storageBucket: "checklist-autocarro-4a5ad.appspot.com",
+            messagingSenderId: "693829638489",
+            appId: "1:693829638489:web:6f781da538908117d31448"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.salvarChecklist = async function (dadosChecklist) {
+            try {
+                await addDoc(collection(db, "checklists"), {
+                    ...dadosChecklist,
+                    timestamp: serverTimestamp()
+                });
+                console.log("Checklist salvo no Firestore!");
+            } catch (e) {
+                console.error("Erro ao salvar checklist: ", e);
+            }
+        };
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
