@@ -18,12 +18,15 @@
             border: 1px solid white;
             background-color: black;
             border-radius: 1rem;
-            padding: 2em 3em;
+            padding: 1em;
             color: white;
             width: 100%;
-            max-width: 600px;
+            max-width: 100%;
             box-sizing: border-box;
-        }
+
+}
+
+        
 
         .identificacao {
             display: flex;
@@ -310,6 +313,18 @@
         <button class="btn btn-primary mt-4" onclick="validarChecklist()">Enviar</button>
 
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Checklist</strong>
+                <small>Aviso</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body">
+                Mensagem aqui.
+            </div>
+        </div>
+    </div>
 
 
 
@@ -326,7 +341,7 @@
             } else {
                 fotoDiv.style.display = 'block';
             }
-             // Armazena estado no sessionStorage
+            // Armazena estado no sessionStorage
             sessionStorage.setItem(zona, el.checked);
         }
 
@@ -336,24 +351,43 @@
             const matricula = document.getElementById('matricula');
             const motorista = document.getElementById('motorista');
             let todosRespondidos = true;
+            let fotosOk = true;
 
             switches.forEach((sw) => {
+                const zona = sw.id.replace('Check', '');
+                const fotoInput = document.getElementById(zona + 'Image');
+
                 if (sw.classList.contains('neutral')) {
                     todosRespondidos = false;
                     sw.classList.add('shake');
                     setTimeout(() => sw.classList.remove('shake'), 500);
+                } else if (!sw.checked) {
+                    // Está em vermelho → deve ter foto
+                    if (!fotoInput || !fotoInput.files || fotoInput.files.length === 0) {
+                        fotosOk = false;
+                        fotoInput.classList.add('shake');
+                        setTimeout(() => fotoInput.classList.remove('shake'), 500);
+                    }
                 }
             });
 
-
             if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
-                alert("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
+                showToast("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
                 return;
-            } else {
-                // Aqui você pode fazer o envio do formulário
-                alert("Checklist enviado com sucesso!");
             }
+
+            if (!fotosOk) {
+                showToast("Por favor, envie uma foto para todos os itens que foram marcados como problema (vermelho).");
+                return;
+            }
+
+            // Se tudo ok:
+            showToast("Checklist enviado com sucesso!");
+            // Aqui você pode enviar para a API, ex. fetch(...)
         }
+
+
+
         document.getElementById('matricula').addEventListener('input', function (e) {
             let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
             let formatted = '';
@@ -366,21 +400,26 @@
         });
 
         window.addEventListener('DOMContentLoaded', () => {
-                const zonas = ['frente', 'lateralDir', 'lateralEsq', 'traseira', 'pneus', 'luzes', 'oleo', 'refrigerante'];
+            const zonas = ['frente', 'lateralDir', 'lateralEsq', 'traseira', 'pneus', 'luzes', 'oleo', 'refrigerante'];
 
-                zonas.forEach(zona => {
-                    const estado = sessionStorage.getItem(zona);
-                    const input = document.getElementById(zona + 'Check');
-                    const fotoDiv = document.getElementById(zona + 'Foto');
+            zonas.forEach(zona => {
+                const estado = sessionStorage.getItem(zona);
+                const input = document.getElementById(zona + 'Check');
+                const fotoDiv = document.getElementById(zona + 'Foto');
 
-                    if (estado !== null) {
-                        input.checked = estado === 'true';
-                        input.classList.remove('neutral');
-                        fotoDiv.style.display = input.checked ? 'none' : 'block';
-                    }
-                });
+                if (estado !== null) {
+                    input.checked = estado === 'true';
+                    input.classList.remove('neutral');
+                    fotoDiv.style.display = input.checked ? 'none' : 'block';
+                }
             });
+        });
 
+        function showToast(message) {
+            document.getElementById('toast-body').innerText = message;
+            const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
 
 
     </script>
