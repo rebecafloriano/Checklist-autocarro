@@ -358,6 +358,7 @@
             let todosRespondidos = true;
             let fotosOk = true;
 
+            // Validação dos switches e fotos
             switches.forEach((sw) => {
                 const zona = sw.id.replace('Check', '');
                 const fotoInput = document.getElementById(zona + 'Image');
@@ -376,6 +377,7 @@
                 }
             });
 
+            // Validação campos obrigatórios
             if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
 
                 if (matricula.value.trim() === '') {
@@ -392,39 +394,46 @@
                 return;
             }
 
+            // Validação fotos obrigatórias
             if (!fotosOk) {
                 showToast("Por favor, envie uma foto para todos os itens que foram marcados como problema (vermelho).");
                 return;
             }
 
             // Se tudo ok:
-            // Se tudo ok:
-
-            const dadosChecklist = {
-                matricula: matricula.value.trim(),
-                motorista: motorista.value.trim(),
-                switches: {},
-                observacoes: {}
-            };
-
-            // Pega o estado de cada switch:
-            document.querySelectorAll('.form-check-input').forEach(sw => {
-                const zona = sw.id.replace('Check', '');
-                const isOk = sw.checked ? 'ok' : 'problema';
-                dadosChecklist.switches[zona] = isOk;
-
-                // Pega também o texto de observações (se houver):
-                const obsTextarea = document.getElementById(zona + 'Textarea');
-                if (obsTextarea) {
-                    dadosChecklist.observacoes[zona] = obsTextarea.value.trim();
-                }
-            });
-
-            // Chama a função global para salvar:
-            salvarChecklist(dadosChecklist);
-
             showToast("Checklist enviado com sucesso!");
 
+            // Limpar campos
+            matricula.value = '';
+            motorista.value = '';
+
+            // Resetar switches e esconder fotos/observações
+            switches.forEach((sw) => {
+                const zona = sw.id.replace('Check', '');
+                const fotoDiv = document.getElementById(zona + 'Foto');
+                const fotoInput = document.getElementById(zona + 'Image');
+                const textarea = document.getElementById(zona + 'Textarea');
+
+                // Voltar para neutral
+                sw.classList.add('neutral');
+                sw.checked = false;
+
+                // Esconder campo de foto
+                fotoDiv.style.display = 'none';
+
+                // Limpar input de foto
+                if (fotoInput) {
+                    fotoInput.value = '';
+                }
+
+                // Limpar textarea
+                if (textarea) {
+                    textarea.value = '';
+                }
+
+                // Limpar estado salvo no sessionStorage
+                sessionStorage.removeItem(zona);
+            });
         }
 
 
