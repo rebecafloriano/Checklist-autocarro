@@ -350,8 +350,7 @@
             sessionStorage.setItem(zona, el.checked);
         }
 
-
-        function validarChecklist() {
+        async function validarChecklist() {
             const switches = document.querySelectorAll('.form-check-input');
             const matricula = document.getElementById('matricula');
             const motorista = document.getElementById('motorista');
@@ -368,7 +367,6 @@
                     sw.classList.add('shake');
                     setTimeout(() => sw.classList.remove('shake'), 500);
                 } else if (!sw.checked) {
-                    // Está em vermelho → deve ter foto
                     if (!fotoInput || !fotoInput.files || fotoInput.files.length === 0) {
                         fotosOk = false;
                         fotoInput.classList.add('shake');
@@ -394,46 +392,52 @@
                 return;
             }
 
-            // Validação fotos obrigatórias
             if (!fotosOk) {
                 showToast("Por favor, envie uma foto para todos os itens que foram marcados como problema (vermelho).");
                 return;
             }
 
-            // Se tudo ok:
-            showToast("Checklist enviado com sucesso!");
+            // Enviar dados para o banco
+            try {
+                // Exemplo usando Firestore:
+                await addDoc(collection(db, "checklists"), {
+                    matricula: matricula.value.trim(),
+                    motorista: motorista.value.trim(),
+                    dataHora: new Date().toISOString(),
+                    respostas: Array.from(switches).map(sw => {
+                        const zona = sw.id.replace('Check', '');
+                        const checked = sw.checked;
+                        const observacoes = document.getElementById(zona + 'Textarea')?.value || '';
+                        return { zona, checked, observacoes };
+                    })
+                });
 
-            // Limpar campos
-            matricula.value = '';
-            motorista.value = '';
+                // Sucesso
+                showToast("Checklist enviado com sucesso!");
 
-            // Resetar switches e esconder fotos/observações
-            switches.forEach((sw) => {
-                const zona = sw.id.replace('Check', '');
-                const fotoDiv = document.getElementById(zona + 'Foto');
-                const fotoInput = document.getElementById(zona + 'Image');
-                const textarea = document.getElementById(zona + 'Textarea');
+                // Limpar campos após envio com sucesso
+                matricula.value = '';
+                motorista.value = '';
+                switches.forEach((sw) => {
+                    const zona = sw.id.replace('Check', '');
+                    const fotoDiv = document.getElementById(zona + 'Foto');
+                    const fotoInput = document.getElementById(zona + 'Image');
+                    const textarea = document.getElementById(zona + 'Textarea');
 
-                // Voltar para neutral
-                sw.classList.add('neutral');
-                sw.checked = false;
+                    sw.classList.add('neutral');
+                    sw.checked = false;
 
-                // Esconder campo de foto
-                fotoDiv.style.display = 'none';
+                    fotoDiv.style.display = 'none';
+                    if (fotoInput) fotoInput.value = '';
+                    if (textarea) textarea.value = '';
 
-                // Limpar input de foto
-                if (fotoInput) {
-                    fotoInput.value = '';
-                }
+                    sessionStorage.removeItem(zona);
+                });
 
-                // Limpar textarea
-                if (textarea) {
-                    textarea.value = '';
-                }
-
-                // Limpar estado salvo no sessionStorage
-                sessionStorage.removeItem(zona);
-            });
+            } catch (error) {
+                console.error("Erro ao enviar para o banco: ", error);
+                showToast("Erro ao enviar checklist. Tente novamente.");
+            }
         }
 
 
