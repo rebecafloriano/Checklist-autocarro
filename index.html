@@ -5,152 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checklist</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        /* === SEU CSS ORIGINAL === */
-        .container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main {
-            border: 1px solid white;
-            background-color: black;
-            border-radius: 1rem;
-            padding: 2em 3em;
-            color: white;
-            width: 100%;
-            max-width: 600px;
-            box-sizing: border-box;
-        }
-
-        .identificacao {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .input-text {
-            height: 1.9em;
-            text-align: center;
-        }
-
-        h1 {
-            text-align: center;
-            padding-bottom: 1rem;
-        }
-
-        button {
-            width: 50%;
-            margin: 0 25%;
-            padding-top: 1rem;
-        }
-
-        .shake {
-            animation: shake 0.4s;
-        }
-
-        @keyframes shake {
-            0% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-4px);
-            }
-
-            50% {
-                transform: translateX(4px);
-            }
-
-            75% {
-                transform: translateX(-4px);
-            }
-
-            100% {
-                transform: translateX(0);
-            }
-        }
-
-        .form-check-input {
-            width: 3em;
-            height: 1.5em;
-        }
-
-        .form-check-input.neutral {
-            background-color: #ccc;
-            border-color: #aaa;
-        }
-
-        .form-check-input:checked {
-            background-color: #198754;
-            border-color: #198754;
-        }
-
-        .form-check-input:not(:checked):not(.neutral) {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .form-check.form-switch {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .form-check-label {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        .form-check-input {
-            margin-left: 1rem;
-        }
-
-        .mb-3 {
-            margin-top: 1rem;
-        }
-
-        .form-label {
-            margin-bottom: 0.5rem;
-            font-weight: 300;
-        }
-
-        .form-floating textarea {
-            min-height: 60px;
-            resize: vertical;
-        }
-
-        @media (max-width: 576px) {
-            .main {
-                padding: 1em;
-                width: 100%;
-                max-width: 97%;
-                box-sizing: border-box;
-            }
-
-            button {
-                width: 100%;
-                margin: 1rem 0 0;
-            }
-
-            .mb-3 {
-                margin-top: 0.5rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .form-label {
-                font-size: 0.9rem;
-                margin-bottom: 0.25rem;
-            }
-
-            .form-control {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+   
 </head>
 
 <body class="d-flex justify-content-center align-items-center min-vh-100 bg-dark text-white">
@@ -181,30 +38,137 @@
         </div>
 
         <!-- CAMPOS DO CHECKLIST -->
-        <!-- Para cada zona: frente, lateralDir, lateralEsq, traseira, pneus, luzes, oleo, refrigerante -->
+        <!-- "Frente" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="frenteCheck">Frente</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="frenteCheck"
+                onchange="handleToggle(this, 'frente')">
+        </div>
+        <div class="mb-3" id="frenteFoto" style="display: none;">
+            <label for="frenteImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="frenteImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="frenteTextarea"></textarea>
+                <label for="frenteTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Lateral Direita" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="lateralDirCheck">Lateral direita</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralDirCheck"
+                onchange="handleToggle(this, 'lateralDir')">
+        </div>
+        <div class="mb-3" id="lateralDirFoto" style="display: none;">
+            <label for="lateralDirImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="lateralDirImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="lateralDirTextarea"></textarea>
+                <label for="lateralDirTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Lateral Esquerda" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="lateralEsqCheck">Lateral esquerda</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="lateralEsqCheck"
+                onchange="handleToggle(this, 'lateralEsq')">
+        </div>
+        <div class="mb-3" id="lateralEsqFoto" style="display: none;">
+            <label for="lateralEsqImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="lateralEsqImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="lateralEsqTextarea"></textarea>
+                <label for="lateralEsqTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Traseira" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="traseiraCheck">Traseira</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="traseiraCheck"
+                onchange="handleToggle(this, 'traseira')">
+        </div>
+        <div class="mb-3" id="traseiraFoto" style="display: none;">
+            <label for="traseiraImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="traseiraImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="traseiraTextarea"></textarea>
+                <label for="traseiraTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Pneus" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="pneusCheck">Pneus</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="pneusCheck"
+                onchange="handleToggle(this, 'pneus')">
+        </div>
+        <div class="mb-3" id="pneusFoto" style="display: none;">
+            <label for="pneusImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="pneusImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="pneusTextarea"></textarea>
+                <label for="pneusTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Luzes" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="luzesCheck">Luzes</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="luzesCheck"
+                onchange="handleToggle(this, 'luzes')">
+        </div>
+        <div class="mb-3" id="luzesFoto" style="display: none;">
+            <label for="luzesImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="luzesImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="luzesTextarea"></textarea>
+                <label for="luzesTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Óleo" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="oleoCheck">Óleo</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="oleoCheck"
+                onchange="handleToggle(this, 'oleo')">
+        </div>
+        <div class="mb-3" id="oleoFoto" style="display: none;">
+            <label for="oleoImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="oleoImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="oleoTextarea"></textarea>
+                <label for="oleoTextarea">Observações</label>
+            </div>
+        </div>
+        
+        <!-- "Refrigerante" -->
+        <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
+            <label class="form-check-label me-3" for="refrigeranteCheck">Refrigerante</label>
+            <input class="form-check-input neutral" type="checkbox" role="switch" id="refrigeranteCheck"
+                onchange="handleToggle(this, 'refrigerante')">
+        </div>
+        <div class="mb-3" id="refrigeranteFoto" style="display: none;">
+            <label for="refrigeranteImage" class="form-label">Carregar foto da avaria</label>
+            <input class="form-control mb-2" type="file" accept="image/*" id="refrigeranteImage">
+            <div class="form-floating">
+                <textarea class="form-control" id="refrigeranteTextarea"></textarea>
+                <label for="refrigeranteTextarea">Observações</label>
+            </div>
+        </div>
 
-        <!-- Vou gerar o bloco completo para cada zona -->
-
-        <script>
-            const zonas = ['frente', 'lateralDir', 'lateralEsq', 'traseira', 'pneus', 'luzes', 'oleo', 'refrigerante'];
-            document.write(zonas.map(zona => `
-                <div class="form-check form-switch mt-3 d-flex justify-content-between align-items-center">
-                    <label class="form-check-label me-3" for="${zona}Check">${zona.charAt(0).toUpperCase() + zona.slice(1)}</label>
-                    <input class="form-check-input neutral" type="checkbox" role="switch" id="${zona}Check" onchange="handleToggle(this, '${zona}')">
-                </div>
-                <div class="mb-3" id="${zona}Foto" style="display: none;">
-                    <label for="${zona}Image" class="form-label">Carregar foto da avaria</label>
-                    <input class="form-control mb-2" type="file" accept="image/*" id="${zona}Image">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="${zona}Textarea"></textarea>
-                        <label for="${zona}Textarea">Observações</label>
-                    </div>
-                </div>
-            `).join(''));
-        </script>
 
         <!-- Botão enviar -->
-        <button class="btn btn-primary mt-4" onclick="validarChecklist()">Enviar</button>
+        <div class="d-flex justify-content-center mt-4">
+            <button class="btn btn-primary" id="botaoEnviar" onclick="validarChecklist()">
+                <span class="spinner-border spinner-border-sm me-2 d-none" id="spinnerEnviar" role="status"
+                    aria-hidden="true"></span>
+                Enviar
+            </button>
+            
+        </div>
+
 
         <!-- Toast -->
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -221,175 +185,9 @@
         </div>
     </div>
 
-    <!-- JS -->
-    <script>
-        function handleToggle(el, zona) {
-            const fotoDiv = document.getElementById(zona + 'Foto');
-
-            if (el.classList.contains('neutral')) {
-                el.classList.remove('neutral');
-                el.checked = true;
-                fotoDiv.style.display = 'none';
-            } else if (el.checked) {
-                fotoDiv.style.display = 'none';
-            } else {
-                fotoDiv.style.display = 'block';
-            }
-            sessionStorage.setItem(zona, el.checked);
-        }
-
-        async function validarChecklist() {
-            const switches = document.querySelectorAll('.form-check-input');
-            const matricula = document.getElementById('matricula');
-            const motorista = document.getElementById('motorista');
-            let todosRespondidos = true;
-            let fotosOk = true;
-
-            switches.forEach((sw) => {
-                const zona = sw.id.replace('Check', '');
-                const fotoInput = document.getElementById(zona + 'Image');
-
-                if (sw.classList.contains('neutral')) {
-                    todosRespondidos = false;
-                    sw.classList.add('shake');
-                    setTimeout(() => sw.classList.remove('shake'), 500);
-                } else if (!sw.checked) {
-                    if (!fotoInput || !fotoInput.files || fotoInput.files.length === 0) {
-                        fotosOk = false;
-                        fotoInput.classList.add('shake');
-                        setTimeout(() => fotoInput.classList.remove('shake'), 500);
-                    }
-                }
-            });
-
-            if (!todosRespondidos || matricula.value.trim() === '' || motorista.value.trim() === '') {
-                if (matricula.value.trim() === '') {
-                    matricula.classList.add('shake');
-                    setTimeout(() => matricula.classList.remove('shake'), 500);
-                }
-
-                if (motorista.value.trim() === '') {
-                    motorista.classList.add('shake');
-                    setTimeout(() => motorista.classList.remove('shake'), 500);
-                }
-
-                showToast("Por favor, preencha todos os campos obrigatórios e revise o checklist.");
-                return;
-            }
-
-            if (!fotosOk) {
-                showToast("Por favor, envie uma foto para todos os itens que foram marcados como problema (vermelho).");
-                return;
-            }
-
-            try {
-                const respostas = {};
-                const switchesMap = {};
-
-                zonas.forEach(zona => {
-                    const sw = document.getElementById(zona + 'Check');
-                    const textarea = document.getElementById(zona + 'Textarea');
-                    respostas[zona] = textarea ? textarea.value.trim() : '';
-                    switchesMap[zona] = sw.checked ? 'ok' : 'problema';
-                });
-
-                const dadosChecklist = {
-                    matricula: matricula.value.trim(),
-                    motorista: motorista.value.trim(),
-                    dataHora: new Date().toISOString(),
-                    observacoes: respostas,
-                    switches: switchesMap
-                };
-
-                await salvarChecklist(dadosChecklist);
-                showToast("Checklist enviado com sucesso!");
-
-                matricula.value = '';
-                motorista.value = '';
-                switches.forEach((sw) => {
-                    const zona = sw.id.replace('Check', '');
-                    const fotoDiv = document.getElementById(zona + 'Foto');
-                    const fotoInput = document.getElementById(zona + 'Image');
-                    const textarea = document.getElementById(zona + 'Textarea');
-
-                    sw.classList.add('neutral');
-                    sw.checked = false;
-
-                    fotoDiv.style.display = 'none';
-                    if (fotoInput) fotoInput.value = '';
-                    if (textarea) textarea.value = '';
-
-                    sessionStorage.removeItem(zona);
-                });
-
-            } catch (error) {
-                console.error("Erro ao enviar para o banco: ", error);
-                showToast("Erro ao enviar checklist. Tente novamente.");
-            }
-        }
-
-        document.getElementById('matricula').addEventListener('input', function (e) {
-            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-            let formatted = '';
-
-            if (value.length > 0) formatted += value.substring(0, 2);
-            if (value.length > 2) formatted += '-' + value.substring(2, 4);
-            if (value.length > 4) formatted += '-' + value.substring(4, 6);
-
-            e.target.value = formatted;
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            zonas.forEach(zona => {
-                const estado = sessionStorage.getItem(zona);
-                const input = document.getElementById(zona + 'Check');
-                const fotoDiv = document.getElementById(zona + 'Foto');
-
-                if (estado !== null) {
-                    input.checked = estado === 'true';
-                    input.classList.remove('neutral');
-                    fotoDiv.style.display = input.checked ? 'none' : 'block';
-                }
-            });
-        });
-
-        function showToast(message) {
-            document.getElementById('toast-body').innerText = message;
-            const toast = new bootstrap.Toast(document.getElementById('liveToast'));
-            toast.show();
-        }
-    </script>
-
-    <!-- Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBsqQU6wFFigmpB4aSCjKVnMOAri9H4y6E",
-            authDomain: "checklist-autocarro-4a5ad.firebaseapp.com",
-            projectId: "checklist-autocarro-4a5ad",
-            storageBucket: "checklist-autocarro-4a5ad.appspot.com",
-            messagingSenderId: "693829638489",
-            appId: "1:693829638489:web:6f781da538908117d31448"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.salvarChecklist = async function (dadosChecklist) {
-            try {
-                await addDoc(collection(db, "checklists"), {
-                    ...dadosChecklist,
-                    timestamp: serverTimestamp()
-                });
-                console.log("Checklist salvo no Firestore!");
-            } catch (e) {
-                console.error("Erro ao salvar checklist: ", e);
-            }
-        };
-    </script>
-
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script type="module" src="firebase.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

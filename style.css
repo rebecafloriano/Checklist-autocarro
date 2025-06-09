@@ -1,0 +1,160 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    border: 1px solid white;
+    background-color: black;
+    border-radius: 1rem;
+    padding: 2em 3em;
+    color: white;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.identificacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-text {
+    height: 1.9em;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    padding-bottom: 1rem;
+}
+
+button {
+    width: 50%;
+    padding: 1rem;
+}
+
+
+.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-4px);
+    }
+
+    50% {
+        transform: translateX(4px);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.form-check-input {
+    width: 3em;
+    height: 1.5em;
+}
+
+.form-check-input.neutral {
+    background-color: #ccc;
+    border-color: #aaa;
+}
+
+.form-check-input:checked {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+
+.form-check-input:not(:checked):not(.neutral) {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.form-check.form-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-check-label {
+    flex: 1;
+    font-weight: 500;
+}
+
+.form-check-input {
+    margin-left: 1rem;
+}
+
+.mb-3 {
+    margin-top: 1rem;
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+}
+
+.form-floating textarea {
+    min-height: 60px;
+    resize: vertical;
+}
+
+@media (max-width: 576px) {
+    .main {
+        padding: 1em;
+        width: 100%;
+        max-width: 97%;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        margin: 1rem 0 0;
+    }
+
+    .mb-3 {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-label {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+    }
+
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: text-bottom;
+    border: 0.15em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+    100% {
+        transform: rotate(360deg);
+    }
+}
